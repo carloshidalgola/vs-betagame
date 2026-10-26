@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RACI para Value Stream</title>
+<style>
+/* Diseño: una sola definición por componente. */
+:root{font-family:Inter,"Segoe UI",Arial,sans-serif;color:#182a45;background:#fafbfc;font-synthesis:none;--decision:#b91c1c;--execution:#fb923c;--consultation:#fde68a;--information:#f1f1f1}
+*{box-sizing:border-box}body{margin:0}header{background:#fff;padding:26px max(24px,calc((100vw - 1440px)/2));border-bottom:1px solid #e3e8ef}h1{font-size:26px;font-weight:650;margin:0;letter-spacing:-.5px}main{max-width:1488px;margin:auto;padding:20px 24px}.topline,.legend,.meta,.actions{display:flex;align-items:center;flex-wrap:wrap}.legend{gap:12px 20px;font-size:12px}.legend span{display:flex;align-items:center;gap:7px}.badge{display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:30px;border-radius:7px;font-size:12px;font-weight:800}.a,.ar{background:var(--decision);color:white}.r{background:var(--execution);color:#431407}.c{background:var(--consultation);color:#713f12}.i{background:var(--information);color:#666}
+.toolbar{margin:18px 0 16px;padding:14px;display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr) auto;gap:14px;align-items:start;background:#fff;border:1px solid #dfe6ee;border-radius:8px}.toolbar>div{min-width:0}.toolbar>button{margin-top:21px}label{display:block;font-size:12px;font-weight:700;color:#586b83;margin-bottom:7px}input,button{font:inherit;font-size:14px;border:1px solid #cdd7e3;border-radius:7px;padding:11px;background:#fff;color:#233a56;width:100%}input:focus,button:focus-visible,summary:focus-visible{outline:3px solid #92bcea;outline-offset:2px}button{cursor:pointer;font-weight:600}button:hover{background:#edf3f9}button:disabled{opacity:.5;cursor:default}.meta{justify-content:space-between;gap:16px;font-size:13px;color:#667991;margin:12px 0}.actions{gap:8px}.actions button{width:auto;font-size:12px;padding:8px 12px}
+details{background:#fff;border:1px solid #dfe6ee;border-radius:8px;margin-top:12px;padding:12px 16px;font-size:13px;line-height:1.8}summary{cursor:pointer;font-weight:700}.multi{position:relative;margin:0;padding:0;border-color:#cdd7e3;line-height:normal}.multi summary{padding:11px;font-size:14px;font-weight:400;min-height:40px;overflow-wrap:anywhere}.multi[open]{z-index:8}.options{position:absolute;top:100%;left:-1px;right:-1px;min-width:230px;background:#fff;padding:8px;border:1px solid #cdd7e3;border-radius:8px;box-shadow:0 12px 30px #102b5026;max-height:340px;overflow:auto}.options label{display:flex;gap:10px;align-items:center;padding:9px;margin:0;font-size:13px;color:#233a56;font-weight:400;cursor:pointer}.options label:hover{background:#edf3f9;border-radius:5px}.options input{width:16px;height:16px;margin:0;accent-color:#173e75}.options button{font-size:12px;padding:7px;margin-bottom:5px}
+.tablewrap{max-width:100%;max-height:68vh;overflow-y:auto;overflow-x:hidden;background:#fff;border:1px solid #dce4ee;border-radius:8px}table{border-collapse:separate;border-spacing:0;width:100%;font-size:13px}th,td{padding:12px 8px;border-bottom:1px solid #e8edf3;text-align:center}thead th{background:#edf2f8;color:#304a68;font-size:12px}td:first-child,th:first-child{text-align:left}#matrix{width:100%;min-width:0;table-layout:fixed}#matrix th,#matrix td{padding:10px 5px;overflow-wrap:anywhere}#matrix th:first-child,#matrix td:first-child{padding-left:12px}#matrix thead th{position:sticky;top:0;z-index:3}#matrix thead th:not(:first-child){font-size:10px;line-height:1.4}#matrix td:first-child{font-size:12px;font-weight:600;line-height:1.5;background:white}td small{display:block;color:#7a8ba0;font-weight:400;font-size:11px;margin-top:4px}#matrix .badge{background:transparent;color:inherit;min-width:0;width:auto;height:auto;padding:5px 2px;font-size:11px}td.heat-ar,td.heat-a{background:var(--decision);color:white}td.heat-r{background:var(--execution);color:#431407}td.heat-c{background:var(--consultation);color:#713f12}td.heat-i{background:var(--information);color:#666}td[class*="heat-"]{border-right:2px solid white;border-bottom:2px solid white}#matrix .section-row th{background:#e6edf5;color:#274665;font-size:12px;font-weight:750;text-align:left;padding:10px 12px;letter-spacing:.2px}.empty{padding:44px;text-align:center;color:#6b7c92}footer{padding:16px 0;color:#67798d;font-size:12px;line-height:1.7}
+@media(max-width:950px){.toolbar{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.toolbar>div:first-child{grid-column:1/-1}main{padding:16px}header{padding:24px 20px}#matrix th,#matrix td{padding:8px 2px}#matrix thead th:not(:first-child){font-size:9px}#matrix .badge{font-size:10px}#matrix td:first-child{font-size:11px}}
+@media(max-width:500px){.toolbar{grid-template-columns:minmax(0,1fr)}.toolbar>div:first-child{grid-column:auto}.meta{align-items:flex-start;flex-direction:column}main{padding:8px}#matrix thead th:not(:first-child){font-size:8px}#matrix .badge{font-size:8px;padding:4px 0}#matrix td:first-child{font-size:10px}#matrix th:first-child,#matrix td:first-child{padding-left:5px}}
+</style></head><body>
+<header><h1>RACI para Value Stream</h1></header>
+<main><div class="topline"><div class="legend"><span><b class="badge r">R</b> Responsible (Responsable)</span><span><b class="badge a">A</b> Accountable (Aprobador / Responsable final)</span><span><b class="badge c">C</b> Consulted (Consultado)</span><span><b class="badge i">I</b> Informed (Informado)</span><span><b class="badge ar">A/R</b> Responsible + Accountable</span></div></div>
+<section class="toolbar" aria-label="Filtros de la matriz"><div><label for="search">Buscar actividad</label><input id="search" type="search" placeholder="Ej. arquitectura, backlog, despliegue…"></div><div><label id="role-label">Rol</label><details class="multi" id="role"><summary aria-labelledby="role-label role-summary"><span id="role-summary">Todos los roles</span></summary><div class="options" id="role-options"></div></details></div><div><label id="group-label">Nivel organizacional</label><details class="multi" id="group"><summary aria-labelledby="group-label group-summary"><span id="group-summary">Todos los niveles</span></summary><div class="options" id="group-options"></div></details></div><div><label id="type-label">Responsabilidad</label><details class="multi" id="type"><summary aria-labelledby="type-label type-summary"><span id="type-summary">Todas</span></summary><div class="options" id="type-options"></div></details></div><button id="reset">Limpiar filtros</button></section>
+
+<div class="meta"><span id="count" aria-live="polite"></span><div class="actions"><button id="excel">Exportar a Excel</button></div></div><div class="tablewrap"><table id="matrix" aria-label="Matriz RACI"></table><div id="empty" class="empty" hidden>No hay coincidencias. Prueba con otros filtros.</div></div>
+<details><summary>Chapters · alcance y límites</summary>
+<p>Los Chapters desarrollan capacidades y mantienen estándares de su disciplina. El LTS conduce las decisiones técnicas transversales de la solución; el LT conduce la implementación del equipo. Los Chapters son una adaptación organizacional, no un rol formal de SAFe.</p>
+<div style="overflow:auto"><table aria-label="Límites de los Chapters"><thead><tr><th>Chapter</th><th>Responsabilidad propia</th><th>Límite en el Value Stream</th></tr></thead><tbody>
+<tr><td>Liderazgo Técnico</td><td>Competencias de los LT, mentoring y prácticas comunes de liderazgo técnico.</td><td>El LTS decide sobre la solución transversal; el LT conduce las decisiones cotidianas del equipo.</td></tr>
+<tr><td>Frontend</td><td>Estándares de Frontend, accesibilidad, pruebas y reutilización.</td><td>Asesora sobre diseño. El equipo decide e implementa dentro de los acuerdos técnicos.</td></tr>
+<tr><td>Backend</td><td>Estándares de APIs, código, pruebas, resiliencia y observabilidad.</td><td>Recomienda prácticas. El Arquitecto de Solución (AS), desde Arquitectura TI, define la arquitectura; el LTS articula su aplicación entre células.</td></tr>
+<tr><td>QA</td><td>Prácticas de calidad, automatización y criterios comunes de prueba.</td><td>Asesora y acompaña. El LT responde por la Definition of Done y la calidad técnica; el equipo ejecuta las pruebas y aplica los acuerdos de calidad.</td></tr>
+</tbody></table></div>
+<p><strong>Ante indicaciones distintas:</strong> Chapter y LT revisan la recomendación. Si afecta estándares, arquitectura o varios equipos, el LTS coordina la resolución. Las excepciones a arquitectura o estándares se evalúan con Arquitectura TI y los responsables de la disciplina, respetando controles obligatorios de seguridad y cumplimiento. Toda demanda adicional ingresa al backlog: el PM define y prioriza épicas; el PO define y prioriza features e historias.</p>
+<p><strong>Regla de trabajo:</strong> el Chapter no asigna tareas directamente ni es una aprobación adicional de entregas. Puede aportar especialistas; su ejecución debe acordarse con el equipo. En la matriz, CL representa al Chapter Lead de la disciplina correspondiente: LT, Frontend, Backend o QA.</p>
+</details>
+<details><summary>Criterios y acuerdos de aplicación</summary><ul><li><strong>Límites del LTS:</strong> decide dentro de la arquitectura aprobada. Si una alternativa de entrega requiere cambiarla, deriva la decisión al Arquitecto de Solución (AS), provisto por Arquitectura TI como Servicio Compartido. Cuando la secuencia técnica afecta prioridades de producto, consulta al PO correspondiente y acuerda el ajuste; el LTS no cambia esas prioridades unilateralmente.</li><li><strong>Dinámica LTS–Chapter Lead:</strong> el LTS comparte con el CL los problemas de disciplina detectados en la ejecución. Ambos acuerdan acciones: el LTS coordina su aplicación en el VS y el CL atiende estándares, prácticas y competencias de su disciplina. Se utiliza la coordinación existente, sin una aprobación ni una reunión adicional. La sincronización técnica de los LT permanece a cargo del LTS.</li><li><strong>Alineamiento del LTS:</strong> decide dentro de la arquitectura aprobada y los lineamientos vigentes de Chapters y áreas de servicio. En secuencia, entrega y riesgos técnicos consulta al CL y al servicio afectados para acordar interfaces, restricciones, estándares y responsabilidades. C representa consulta a los responsables pertinentes, no aprobación de todos los Chapters o servicios. Si necesita una excepción, la acuerda con la autoridad del lineamiento antes de aplicarla; no lo modifica unilateralmente.</li><li><strong>Dirección técnica sin aprobaciones adicionales:</strong> LTS decide con consulta a los LT, PO, Chapters y servicios afectados; no requiere consultar a todos los equipos. Los LT aportan viabilidad y dependencias; el PO aporta prioridades y capacidad acordadas. En riesgos y deuda transversal, los LT ejecutan las acciones técnicas acordadas. PM y GP reciben las decisiones en los canales existentes. En la Tríada, el LTS consolida el criterio técnico y dialoga directamente con PM y AC; no necesita una ronda previa con todos los roles.</li><li><strong>Consultas por excepción:</strong> el LTS consulta a PM si cambia alcance, OKRs o roadmap; a GP si afecta hitos o compromisos; las consultas a SC y CL se limitan al servicio y disciplina afectados. Si cambia el marco aprobado o un estándar obligatorio, la excepción se acuerda con su autoridad correspondiente. I no impide estas consultas puntuales ni exige una reunión adicional. Las acciones se registran en el backlog o seguimiento existente.</li><li><strong>LT:</strong> decide cómo se implementa dentro de su célula, responde por la Definition of Done y la calidad técnica, y prioriza la deuda dentro de la capacidad reservada. Team Members ejecutan la construcción y las pruebas. Cambios de capacidad se acuerdan con el PO; impactos entre células se coordinan con el LTS.</li><li><strong>Dinámica LT–CL–LTS:</strong> el LT solicita al CL las decisiones de disciplina con el análisis completo. Para decisiones de arquitectura, prepara el análisis acompañado por el LTS y lo presenta al Arquitecto de Solución mediante el servicio de Arquitectura TI. El acompañamiento del LTS no sustituye la autoridad de decisión del CL o del AS.</li><li><strong>Restricciones del LT:</strong> respeta los estándares acordados y la arquitectura aprobada. No espera más de 48 horas hábiles por una decisión pendiente: vencido ese plazo, activa el flujo de escalamiento definido por la organización. El vencimiento no autoriza excepciones ni equivale a aprobación.</li>
+<li><strong>Producto:</strong> PM define visión, roadmap, OKRs y épicas; PO define features e historias y evalúa sus resultados. Es una adaptación organizacional de SAFe. Al evaluar features, PM y LTS son informados; se consultan si el resultado requiere cambios de estrategia o arquitectura.</li>
+<li><strong>LTS:</strong> representa Tecnología en la Tríada y mantiene la visión integral de la solución. Decide secuencia y dependencias técnicas entre células y los ajustes técnicos de entrega dentro de la arquitectura aprobada; gestiona riesgos técnicos y deuda transversal. Los ajustes implican elegir entre alternativas técnicas considerando tiempos, complejidad y riesgo, sin modificar prioridades de negocio ni controles obligatorios. No modifica unilateralmente prioridades de negocio o fechas comprometidas.</li>
+<li><strong>Arquitectura TI:</strong> define el marco de arquitectura y aprueba sus excepciones. Está representada por SC en esas actividades. El LTS puede aportar conocimientos de arquitectura y recurrir al servicio especializado; el LT conduce la implementación técnica del equipo.</li>
+<li><strong>Agile Coach:</strong> facilita PI Planning, coordinación, resolución de impedimentos y mejora continua. Es consultado en visión, roadmap y OKRs; permanece informado en la evaluación de resultados de épicas; permanece informado en decisiones de contenido de producto y tecnología. Para este modelo asume funciones de facilitación equivalentes a RTE.</li>
+<li><strong>Gestor de Proyecto:</strong> consolida hitos, riesgos y reportes; escala desvíos sin sustituir las decisiones de producto, tecnología o planificación del equipo. Permanece informado en definición y evaluación de features.</li>
+<li><strong>Team Members:</strong> refinan, estiman, construyen, prueban e integran. Permanecen informados en decisiones de épicas y features; PO, LT y LTS recogen su aporte especializado cuando se requiere.</li>
+<li><strong>Servicios Compartidos:</strong> Arquitectura TI, BD y Data Management, Ciberseguridad, DevOps, Operaciones TI y servicios de CDO. Participa el servicio que corresponda a la actividad, a demanda; no todas las áreas. Desarrollo de Aplicaciones actúa como Team Members cuando trabaja dentro de las células.</li>
+<li><strong>Review del Value Stream:</strong> el PO socializa resultados del equipo con PM, AC, LTS y GP. Es distinta de la System Demo.</li>
+<li><strong>Lectura:</strong> cada actividad tiene una sola A; puede quedar oculta al filtrar columnas. C identifica una consulta habitual al rol. Los controles corporativos y las decisiones de inversión de sponsors mantienen su autoridad.</li>
+</ul></details>
+<footer>Servicios Compartidos incluye DevOps y servicios especializados de TI y CDO.</footer></main>
+<script>/* CONFIGURACIÓN: editar aquí los roles y actividades.
+   El orden de ROLES define las columnas. Cada actividad conserva sus valores por sigla.
+   RACI: A/R, A, R, C, I. Mantener una sola A o A/R por actividad.
+   Para agregar una actividad, copiar un objeto y asignar su bloque y responsabilidades. */
+const ROLES = [
+  {
+    "id": "PM",
+    "name": "Product Manager",
+    "group": "Value Stream"
+  },
+  {
+    "id": "LTS",
+    "name": "Líder Tecnológico de Solución",
+    "group": "Value Stream"
+  },
+  {
+    "id": "AC",
+    "name": "Agile Coach",
+    "group": "Value Stream"
+  },
+  {
+    "id": "GP",
+    "name": "Gestor de Proyecto",
+    "group": "Value Stream"
+  },
+  {
+    "id": "PO",
+    "name": "Product Owner",
+    "group": "Equipos"
+  },
+  {
+    "id": "LT",
+    "name": "Líder Técnico",
+    "group": "Equipos"
+  },
+  {
+    "id": "SM",
+    "name": "Scrum Master",
+    "group": "Equipos"
+  },
+  {
+    "id": "TM",
+    "name": "Team Members",
+    "group": "Equipos"
+  },
+  {
+    "id": "SC",
+    "name": "Servicios Compartidos",
+    "group": "Soporte"
+  },
+  {
+    "id": "CL",
+    "name": "Chapter Lead",
+    "group": "Chapters"
+  }
+];
+const ACTIVITIES = [
+  {"title":"Definir visión, roadmap y resultados (OKRs) del producto","category":"Estrategia","block":"01 · Estrategia y producto","raci":{"PM":"A/R","LTS":"C","AC":"C","GP":"C","PO":"C","LT":"I","SM":"I","TM":"I","SC":"C","CL":"I"}},
+  {"title":"Definir y priorizar épicas","category":"Producto","block":"01 · Estrategia y producto","raci":{"PM":"A/R","LTS":"C","AC":"I","GP":"C","PO":"C","LT":"I","SM":"I","TM":"I","SC":"C","CL":"I"}},
+  {"title":"Evaluar resultados de Épicas","category":"Estrategia","block":"01 · Estrategia y producto","raci":{"PM":"A/R","LTS":"C","AC":"I","GP":"I","PO":"C","LT":"I","SM":"I","TM":"I","SC":"I","CL":"I"}},
+  {"title":"Definir y priorizar features","category":"Producto","block":"01 · Estrategia y producto","raci":{"PM":"C","LTS":"C","AC":"I","GP":"I","PO":"A/R","LT":"C","SM":"I","TM":"I","SC":"C","CL":"I"}},
+  {"title":"Evaluar resultados de features","category":"Producto","block":"01 · Estrategia y producto","raci":{"PM":"I","LTS":"I","AC":"I","GP":"I","PO":"A/R","LT":"C","SM":"I","TM":"I","SC":"I","CL":"I"}},
+  {"title":"Decidir secuencia y dependencias técnicas entre células","category":"Dirección técnica","block":"02 · Dirección técnica","raci":{"PM":"C","LTS":"A/R","AC":"I","GP":"I","PO":"C","LT":"C","SM":"I","TM":"I","SC":"C","CL":"C"}},
+  {"title":"Decidir cómo entregar respetando la arquitectura aprobada","category":"Dirección técnica","block":"02 · Dirección técnica","raci":{"PM":"I","LTS":"A/R","AC":"I","GP":"I","PO":"C","LT":"C","SM":"I","TM":"I","SC":"C","CL":"C"}},
+  {"title":"Gestionar riesgos técnicos y deuda entre células","category":"Dirección técnica","block":"02 · Dirección técnica","raci":{"PM":"I","LTS":"A/R","AC":"I","GP":"I","PO":"C","LT":"R","SM":"I","TM":"I","SC":"C","CL":"C"}},
+  {"title":"Representar a Tecnología en la Tríada","category":"Dirección técnica","block":"02 · Dirección técnica","raci":{"PM":"C","LTS":"A/R","AC":"C","GP":"I","PO":"I","LT":"I","SM":"I","TM":"I","SC":"I","CL":"I"}},
+  {"title":"Coordinar a los LT en la sincronización técnica del VS","category":"Dirección técnica","block":"02 · Dirección técnica","raci":{"PM":"I","LTS":"A/R","AC":"I","GP":"I","PO":"I","LT":"R","SM":"I","TM":"I","SC":"I","CL":"I"}},
+  {"title":"Facilitar PI Planning","category":"Planificación","block":"03 · Planificación y coordinación","raci":{"PM":"I","LTS":"I","AC":"A","GP":"I","PO":"I","LT":"I","SM":"R","TM":"I","SC":"I","CL":"I"}},
+  {"title":"Consolidar hitos, cronograma y seguimiento del proyecto","category":"Gestión de proyecto","block":"03 · Planificación y coordinación","raci":{"PM":"C","LTS":"C","AC":"C","GP":"A/R","PO":"R","LT":"I","SM":"C","TM":"I","SC":"C","CL":"I"}},
+  {"title":"Consolidar riesgos del proyecto y dar seguimiento a sus acciones","category":"Gestión de proyecto","block":"03 · Planificación y coordinación","raci":{"PM":"C","LTS":"R","AC":"R","GP":"A/R","PO":"R","LT":"I","SM":"C","TM":"I","SC":"C","CL":"C"}},
+  {"title":"Preparar reportes de avance y escalar desvíos del proyecto","category":"Gestión de proyecto","block":"03 · Planificación y coordinación","raci":{"PM":"C","LTS":"C","AC":"I","GP":"A/R","PO":"R","LT":"I","SM":"C","TM":"I","SC":"C","CL":"I"}},
+  {"title":"Facilitar la resolución de impedimentos entre equipos","category":"Coordinación","block":"03 · Planificación y coordinación","raci":{"PM":"C","LTS":"R","AC":"A/R","GP":"R","PO":"R","LT":"R","SM":"R","TM":"C","SC":"R","CL":"C"}},
+  {"title":"Definir, priorizar y refinar historias del equipo","category":"Producto","block":"04 · Trabajo de los equipos","raci":{"PM":"I","LTS":"I","AC":"I","GP":"I","PO":"A/R","LT":"C","SM":"C","TM":"R","SC":"I","CL":"I"}},
+  {"title":"Estimar trabajo y definir el plan de ejecución del equipo","category":"Planificación","block":"04 · Trabajo de los equipos","raci":{"PM":"I","LTS":"I","AC":"I","GP":"I","PO":"A/R","LT":"R","SM":"C","TM":"R","SC":"I","CL":"I"}},
+  {"title":"Decidir cómo se implementa dentro de su célula","category":"Tecnología","block":"04 · Trabajo de los equipos","raci":{"PM":"I","LTS":"C","AC":"I","GP":"I","PO":"C","LT":"A/R","SM":"I","TM":"R","SC":"I","CL":"I"}},
+  {"title":"Facilitar eventos y gestionar impedimentos del equipo","category":"Coordinación","block":"04 · Trabajo de los equipos","raci":{"PM":"I","LTS":"I","AC":"C","GP":"C","PO":"C","LT":"R","SM":"A/R","TM":"R","SC":"I","CL":"I"}},
+  {"title":"Responder por la Definition of Done y la calidad técnica","category":"Entrega","block":"04 · Trabajo de los equipos","raci":{"PM":"I","LTS":"I","AC":"I","GP":"I","PO":"C","LT":"A","SM":"C","TM":"R","SC":"I","CL":"I"}},
+  {"title":"Aceptar historias según criterios acordados","category":"Producto","block":"04 · Trabajo de los equipos","raci":{"PM":"I","LTS":"I","AC":"I","GP":"I","PO":"A/R","LT":"C","SM":"I","TM":"R","SC":"I","CL":"I"}},
+  {"title":"Priorizar la deuda dentro de la capacidad reservada","category":"Tecnología","block":"04 · Trabajo de los equipos","raci":{"PM":"I","LTS":"I","AC":"I","GP":"I","PO":"C","LT":"A/R","SM":"I","TM":"R","SC":"I","CL":"I"}},
+  {"title":"Proveer servicios especializados acordados","category":"Soporte","block":"05 · Soporte, integración y entrega","raci":{"PM":"I","LTS":"C","AC":"I","GP":"C","PO":"C","LT":"C","SM":"I","TM":"C","SC":"A/R","CL":"C"}},
+  {"title":"Mantener entornos y herramientas compartidas de integración y entrega","category":"Soporte","block":"05 · Soporte, integración y entrega","raci":{"PM":"I","LTS":"C","AC":"I","GP":"C","PO":"I","LT":"R","SM":"I","TM":"R","SC":"A/R","CL":"C"}},
+  {"title":"Coordinar integración y pruebas de extremo a extremo","category":"Entrega","block":"05 · Soporte, integración y entrega","raci":{"PM":"I","LTS":"C","AC":"C","GP":"C","PO":"C","LT":"R","SM":"I","TM":"R","SC":"A/R","CL":"C"}},
+  {"title":"Coordinar la System Demo","category":"Entrega","block":"05 · Soporte, integración y entrega","raci":{"PM":"C","LTS":"C","AC":"A","GP":"C","PO":"R","LT":"R","SM":"R","TM":"R","SC":"R","CL":"I"}},
+  {"title":"Review del Value Stream","category":"Seguimiento del sprint","block":"05 · Soporte, integración y entrega","raci":{"PM":"C","LTS":"C","AC":"C","GP":"C","PO":"A/R","LT":"I","SM":"I","TM":"I","SC":"I","CL":"I"}},
+  {"title":"Decidir oportunidad de liberación y alcance funcional","category":"Entrega","block":"05 · Soporte, integración y entrega","raci":{"PM":"A/R","LTS":"C","AC":"I","GP":"C","PO":"R","LT":"I","SM":"I","TM":"I","SC":"C","CL":"C"}},
+  {"title":"Ejecutar el despliegue técnico integrado","category":"Entrega","block":"05 · Soporte, integración y entrega","raci":{"PM":"I","LTS":"C","AC":"I","GP":"R","PO":"I","LT":"R","SM":"I","TM":"R","SC":"A/R","CL":"C"}},
+  {"title":"Facilitar Inspect & Adapt y seguimiento de mejoras transversales","category":"Mejora continua","block":"06 · Mejora continua","raci":{"PM":"C","LTS":"R","AC":"A/R","GP":"C","PO":"R","LT":"R","SM":"R","TM":"R","SC":"C","CL":"R"}},
+  {"title":"Definir y mantener estándares y prácticas de la disciplina","category":"Chapters","block":"07 · Chapters: estándares y capacidades","raci":{"PM":"I","LTS":"C","AC":"I","GP":"I","PO":"C","LT":"R","SM":"I","TM":"C","SC":"C","CL":"A/R"}},
+  {"title":"Desarrollar competencias y mentoring de la disciplina","category":"Chapters","block":"07 · Chapters: estándares y capacidades","raci":{"PM":"I","LTS":"C","AC":"I","GP":"I","PO":"C","LT":"R","SM":"I","TM":"C","SC":"C","CL":"A/R"}}
+];
+// Adaptadores para la vista y la exportación. No editar para cambiar responsabilidades.
+const roles=ROLES.map(({id,name,group})=>[id,name,group]);
+const rows=ACTIVITIES.map(({title,category,block,raci})=>Object.assign([title,category,...ROLES.map(({id})=>raci[id]||'I')],{block}));
+const elements=new Map();
+const $=id=>{if(!elements.has(id))elements.set(id,document.getElementById(id));return elements.get(id)};const norm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const searchIndex=new Map(rows.map(row=>[row,norm(row[0]+' '+row[1]+' '+row.block)]));
+const choices={role:roles.map((r,i)=>[String(i),r[1]]),group:[...new Set(ROLES.map(role=>role.group))].map(value=>[value,value]),type:[['A','A – Accountable (Aprobador / Responsable final)'],['R','R – Responsible (Responsable)'],['C','C – Consulted (Consultado)'],['I','I – Informed (Informado)'],['A/R','A/R – Responsible + Accountable']]};
+const selected={role:new Set(),group:new Set(),type:new Set()};
+const defaults={role:'Todos los roles',group:'Todos los niveles',type:'Todas'};
+Object.keys(choices).forEach(id=>{
+ const box=$(id+'-options');
+ const clear=document.createElement('button');clear.type='button';clear.textContent='Mostrar todas las opciones';clear.onclick=()=>{selected[id].clear();box.querySelectorAll('input').forEach(c=>c.checked=false);updateSummary(id);render()};box.append(clear);
+ choices[id].forEach(([value,text])=>{const label=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.value=value;input.onchange=()=>{input.checked?selected[id].add(value):selected[id].delete(value);updateSummary(id);render()};label.append(input,document.createTextNode(text));box.append(label)});
+ $(id).addEventListener('toggle',()=>{if($(id).open)Object.keys(choices).filter(k=>k!==id).forEach(k=>$(k).open=false)});
+});
+function updateSummary(id){const values=choices[id].filter(([v])=>selected[id].has(v));$(id+'-summary').textContent=values.length===0?defaults[id]:values.length===1?values[0][1]:values.length+' seleccionados';}
+document.addEventListener('click',e=>{Object.keys(choices).forEach(id=>{if(!$(id).contains(e.target))$(id).open=false})});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')Object.keys(choices).forEach(id=>$(id).open=false)});
+// Filtrado: preparar una vez los criterios de cada actualización.
+const responsibilityMatches={A:new Set(['A','A/R']),R:new Set(['R','A/R']),C:new Set(['C']),I:new Set(['I']),'A/R':new Set(['A/R'])};
+function view(){
+ const indices=[];
+ roles.forEach((role,i)=>{
+  if((!selected.group.size||selected.group.has(role[2]))&&(!selected.role.size||selected.role.has(String(i))))indices.push(i);
+ });
+ const query=norm($('search').value.trim());
+ const allowed=new Set();
+ selected.type.forEach(type=>responsibilityMatches[type].forEach(value=>allowed.add(value)));
+ const data=indices.length?rows.filter(row=>(!query||searchIndex.get(row).includes(query))&&(!allowed.size||indices.some(i=>allowed.has(row[i+2])))):[];
+ return {indices,data};
+}
+
+// Vista: conservar encabezados y celdas mientras no cambien las columnas visibles.
+const escapeHTML=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+const heatClasses={'A/R':'ar',A:'a',R:'r',C:'c',I:'i'};
+let columnKey=null;
+let renderedRows=new Map();
+function prepareColumns(indices){
+ const key=indices.join(',');
+ if(key===columnKey)return;
+ columnKey=key;
+ const roleWidth=indices.length?70/indices.length:0;
+ $('matrix').innerHTML='<colgroup><col style="width:'+(indices.length?30:100)+'%">'+indices.map(()=>'<col style="width:'+roleWidth+'%">').join('')+'</colgroup><thead><tr><th scope="col">Actividad / responsabilidad</th>'+indices.map(i=>'<th scope="col">'+escapeHTML(roles[i][0])+'<br>'+escapeHTML(roles[i][1])+'</th>').join('')+'</tr></thead><tbody id="matrix-body"></tbody>';
+ elements.delete('matrix-body');
+ renderedRows=new Map(rows.map(row=>[row,'<tr><td>'+escapeHTML(row[0])+'<small>'+escapeHTML(row[1])+'</small></td>'+indices.map(i=>{
+  const value=row[i+2];
+  return '<td class="heat-'+heatClasses[value]+'"><span class="badge" title="'+escapeHTML(roles[i][1]+': '+value)+'">'+value+'</span></td>';
+ }).join('')+'</tr>']));
+}
+function render(){
+ const {indices,data}=view();
+ prepareColumns(indices);
+ let previousBlock=null;
+ const content=[];
+ data.forEach(row=>{
+  if(row.block!==previousBlock){
+   content.push('<tr class="section-row"><th scope="rowgroup" colspan="'+(indices.length+1)+'">'+escapeHTML(row.block)+'</th></tr>');
+   previousBlock=row.block;
+  }
+  content.push(renderedRows.get(row));
+ });
+ $('matrix-body').innerHTML=content.join('');
+ $('count').textContent=data.length+' de '+rows.length+' actividades · '+indices.length+' de '+roles.length+' roles';
+ $('empty').hidden=data.length>0;
+ $('excel').disabled=data.length===0;
+}
+$('search').addEventListener('input',render);$('reset').onclick=()=>{$('search').value='';Object.keys(choices).forEach(id=>{selected[id].clear();$(id+'-options').querySelectorAll('input').forEach(c=>c.checked=false);$(id).open=false;updateSummary(id)});render()};
+
+// Exportación XLSX sin dependencias ni acceso a internet.
+function excelBlob(data){
+ const xml=s=>String(s).replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g,'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+ const col=n=>{let s='';for(n++;n;n=Math.floor((n-1)/26))s=String.fromCharCode(65+(n-1)%26)+s;return s};
+ const sheet='<?xml version="1.0" encoding="UTF-8"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols><col min="1" max="1" width="35" customWidth="1"/><col min="2" max="2" width="65" customWidth="1"/><col min="3" max="'+data[0].length+'" width="24" customWidth="1"/></cols><sheetData>'+data.map((r,i)=>'<row r="'+(i+1)+'" ht="42" customHeight="1">'+r.map((v,j)=>'<c r="'+col(j)+(i+1)+'" t="inlineStr" s="'+(i===0?1:({A:2,'A/R':2,R:3,C:4,I:5}[v]||0))+'"><is><t xml:space="preserve">'+xml(v)+'</t></is></c>').join('')+'</row>').join('')+'</sheetData><autoFilter ref="A1:'+col(data[0].length-1)+data.length+'"/></worksheet>';
+ const files={
+ '[Content_Types].xml':'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>',
+ '_rels/.rels':'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>',
+ 'xl/workbook.xml':'<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="RACI" sheetId="1" r:id="rId1"/></sheets></workbook>',
+ 'xl/_rels/workbook.xml.rels':'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>',
+ 'xl/worksheets/sheet1.xml':sheet,
+ 'xl/styles.xml':'<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/><color rgb="FF182A45"/></font><font><b/><sz val="11"/><name val="Calibri"/><color rgb="FFFFFFFF"/></font></fonts><fills count="6"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill>'+['B91C1C','FB923C','FDE68A','F1F1F1'].map(c=>'<fill><patternFill patternType="solid"><fgColor rgb="FF'+c+'"/><bgColor indexed="64"/></patternFill></fill>').join('')+'</fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="6">'+[ [0,0],[1,2],[1,2],[0,3],[0,4],[0,5]].map(([f,b],i)=>'<xf numFmtId="0" fontId="'+f+'" fillId="'+b+'" borderId="0" xfId="0" applyFill="1" applyAlignment="1"><alignment vertical="center" horizontal="'+(i>1?'center':'left')+'" wrapText="1"/></xf>').join('')+'</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>'};
+ const enc=new TextEncoder(),parts=[],central=[];let offset=0;
+ const crc=bytes=>{let c=0xffffffff;for(const b of bytes){c^=b;for(let k=0;k<8;k++)c=(c>>>1)^((c&1)?0xedb88320:0)}return (c^0xffffffff)>>>0};
+ function header(size,values){const a=new Uint8Array(size),d=new DataView(a.buffer);values.forEach(([o,v,n])=>n===2?d.setUint16(o,v,true):d.setUint32(o,v,true));return a}
+ for(const [name,text] of Object.entries(files)){const n=enc.encode(name),b=enc.encode(text),c=crc(b);const local=header(30,[[0,0x04034b50,4],[4,20,2],[12,33,2],[14,c,4],[18,b.length,4],[22,b.length,4],[26,n.length,2]]);parts.push(local,n,b);const dir=header(46,[[0,0x02014b50,4],[4,20,2],[6,20,2],[14,33,2],[16,c,4],[20,b.length,4],[24,b.length,4],[28,n.length,2],[42,offset,4]]);central.push(dir,n);offset+=30+n.length+b.length}
+ const size=central.reduce((a,b)=>a+b.length,0),end=header(22,[[0,0x06054b50,4],[8,Object.keys(files).length,2],[10,Object.keys(files).length,2],[12,size,4],[16,offset,4]]);
+ return new Blob([...parts,...central,end],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+}
+$('excel').onclick=()=>{const {indices,data}=view();const grid=[['Bloque','Actividad','Ámbito',...indices.map(i=>roles[i][1])],...data.map(r=>[r.block,r[0],r[1],...indices.map(i=>r[i+2])])];const url=URL.createObjectURL(excelBlob(grid)),a=document.createElement('a');a.href=url;a.download='matriz-raci.xlsx';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+render();
+</script></body></html>
