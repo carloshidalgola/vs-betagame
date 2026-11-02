@@ -896,9 +896,9 @@ function prepareColumns(indices){
   return '<td class="heat-'+heatClasses[value]+'"><span class="badge" title="'+escapeHTML(roles[i][1]+': '+value)+'">'+value+'</span></td>';
  }).join('')+'</tr>']));
 }
-// Cada sección comienza expandida; el estado se conserva al filtrar.
+// Cada sección comienza contraída; el estado se conserva al filtrar.
 const sectionNames=[...new Set(rows.map(row=>row.block))];
-const collapsedSections=new Set();
+const collapsedSections=new Set(sectionNames);
 $('matrix').addEventListener('click',event=>{
  const button=event.target.closest('button[data-section]');
  if(!button)return;
@@ -934,7 +934,7 @@ $('search').addEventListener('input',render);
 $('reset').onclick=()=>{
  $('search').value='';
  filterIds.forEach(clearFilter);
- collapsedSections.clear();
+ sectionNames.forEach(section=>collapsedSections.add(section));
  closeFilters();
  render();
 };
