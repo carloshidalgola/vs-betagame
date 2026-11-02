@@ -9,6 +9,12 @@ details{background:#fff;border:1px solid #dfe6ee;border-radius:8px;margin-top:12
 .tablewrap{max-width:100%;max-height:68vh;overflow-y:auto;overflow-x:hidden;background:#fff;border:1px solid #dce4ee;border-radius:8px}table{border-collapse:separate;border-spacing:0;width:100%;font-size:13px}th,td{padding:12px 8px;border-bottom:1px solid #e8edf3;text-align:center}thead th{background:#edf2f8;color:#304a68;font-size:12px}td:first-child,th:first-child{text-align:left}#matrix{width:100%;min-width:0;table-layout:fixed}#matrix th,#matrix td{padding:10px 5px;overflow-wrap:anywhere}#matrix th:first-child,#matrix td:first-child{padding-left:12px}#matrix thead th{position:sticky;top:0;z-index:3}#matrix thead th:not(:first-child){font-size:10px;line-height:1.4}#matrix td:first-child{font-size:12px;font-weight:600;line-height:1.5;background:white}td small{display:block;color:#7a8ba0;font-weight:400;font-size:11px;margin-top:4px}#matrix .badge{background:transparent;color:inherit;min-width:0;width:auto;height:auto;padding:5px 2px;font-size:11px}td.heat-ar,td.heat-a{background:var(--decision);color:white}td.heat-r{background:var(--execution);color:#431407}td.heat-c{background:var(--consultation);color:#713f12}td.heat-i{background:var(--information);color:#666}td[class*="heat-"]{border-right:2px solid white;border-bottom:2px solid white}#matrix .section-row th{background:#e6edf5;color:#274665;font-size:12px;font-weight:750;text-align:left;padding:10px 12px;letter-spacing:.2px}.empty{padding:44px;text-align:center;color:#6b7c92}footer{padding:16px 0;color:#67798d;font-size:12px;line-height:1.7}
 @media(max-width:950px){.toolbar{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.toolbar>div:first-child{grid-column:1/-1}main{padding:16px}header{padding:24px 20px}#matrix th,#matrix td{padding:8px 2px}#matrix thead th:not(:first-child){font-size:9px}#matrix .badge{font-size:10px}#matrix td:first-child{font-size:11px}}
 @media(max-width:500px){.toolbar{grid-template-columns:minmax(0,1fr)}.toolbar>div:first-child{grid-column:auto}.meta{align-items:flex-start;flex-direction:column}main{padding:8px}#matrix thead th:not(:first-child){font-size:8px}#matrix .badge{font-size:8px;padding:4px 0}#matrix td:first-child{font-size:10px}#matrix th:first-child,#matrix td:first-child{padding-left:5px}}
+
+#matrix .section-row th{padding:0}
+.section-toggle{display:flex;align-items:center;gap:8px;width:100%;padding:11px 12px;border:0;border-radius:0;text-align:left;background:#e6edf5;color:#274665;font-size:12px;font-weight:750;letter-spacing:.2px}
+.section-toggle:hover{background:#d8e4f1}
+.section-arrow{font-size:16px;line-height:1;flex:0 0 14px}
+.section-count{margin-left:auto;font-size:11px;font-weight:400;color:#536b85;white-space:nowrap}
 </style></head><body>
 <header><h1>RACI para Value Stream</h1></header>
 <main><div class="topline"><div class="legend"><span><b class="badge r">R</b> Responsible (Responsable)</span><span><b class="badge a">A</b> Accountable (Aprobador / Responsable final)</span><span><b class="badge c">C</b> Consulted (Consultado)</span><span><b class="badge i">I</b> Informed (Informado)</span><span><b class="badge ar">A/R</b> Responsible + Accountable</span></div></div>
@@ -890,20 +896,37 @@ function prepareColumns(indices){
   return '<td class="heat-'+heatClasses[value]+'"><span class="badge" title="'+escapeHTML(roles[i][1]+': '+value)+'">'+value+'</span></td>';
  }).join('')+'</tr>']));
 }
+// Cada sección comienza expandida; el estado se conserva al filtrar.
+const sectionNames=[...new Set(rows.map(row=>row.block))];
+const collapsedSections=new Set();
+$('matrix').addEventListener('click',event=>{
+ const button=event.target.closest('button[data-section]');
+ if(!button)return;
+ const section=sectionNames[Number(button.dataset.section)];
+ if(!section)return;
+ collapsedSections.has(section)?collapsedSections.delete(section):collapsedSections.add(section);
+ render();
+ // Mantener el foco para uso con teclado tras actualizar la tabla.
+ $('matrix').querySelector('button[data-section="'+button.dataset.section+'"]')?.focus();
+});
 function render(){
  const {indices,data}=view();
  prepareColumns(indices);
- let previousBlock=null;
- const content=[];
+ const groups=new Map();
  data.forEach(row=>{
-  if(row.block!==previousBlock){
-   content.push('<tr class="section-row"><th scope="rowgroup" colspan="'+(indices.length+1)+'">'+escapeHTML(row.block)+'</th></tr>');
-   previousBlock=row.block;
-  }
-  content.push(renderedRows.get(row));
+  if(!groups.has(row.block))groups.set(row.block,[]);
+  groups.get(row.block).push(row);
+ });
+ const content=[];
+ let hiddenCount=0;
+ groups.forEach((group,block)=>{
+  const expanded=!collapsedSections.has(block);
+  if(!expanded)hiddenCount+=group.length;
+  content.push('<tr class="section-row"><th scope="rowgroup" colspan="'+(indices.length+1)+'"><button type="button" class="section-toggle" data-section="'+sectionNames.indexOf(block)+'" aria-expanded="'+expanded+'" aria-label="'+(expanded?'Contraer ':'Expandir ')+escapeHTML(block)+'"><span class="section-arrow" aria-hidden="true">'+(expanded?'▾':'▸')+'</span><span>'+escapeHTML(block)+'</span><span class="section-count">'+group.length+' actividades</span></button></th></tr>');
+  if(expanded)group.forEach(row=>content.push(renderedRows.get(row)));
  });
  $('matrix-body').innerHTML=content.join('');
- $('count').textContent=data.length+' de '+rows.length+' actividades · '+indices.length+' de '+roles.length+' roles';
+ $('count').textContent=data.length+' de '+rows.length+' actividades · '+indices.length+' de '+roles.length+' roles'+(hiddenCount?' · '+hiddenCount+' en secciones contraídas':'');
  $('empty').hidden=data.length>0;
  $('excel').disabled=data.length===0;
 }
@@ -911,6 +934,7 @@ $('search').addEventListener('input',render);
 $('reset').onclick=()=>{
  $('search').value='';
  filterIds.forEach(clearFilter);
+ collapsedSections.clear();
  closeFilters();
  render();
 };
